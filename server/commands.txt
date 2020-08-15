@@ -1,0 +1,13 @@
+COMMANDS
+
+CREATE PROJECT NODE:
+- yarn init -y
+
+CONFIG NODE:
+- yarn tsc --init
+- yarn add ts-node-dev
+
+DEPENDEND:
+- yarn add @types/express
+- yarn add knex sqlite3
+- yarn knex:migrate

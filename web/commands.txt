@@ -1,0 +1,5 @@
+CREATE PROJECT WITH TEMPLATE 
+yarn create react-app web --template typescript
+
+REACT:
+- yarn add @types/react-router-dom
