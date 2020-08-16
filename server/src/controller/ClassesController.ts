@@ -13,8 +13,6 @@ export default class ClassesController {
     async index(request: Request, response: Response) {
         const filters = request.query;
 
-        console.log(filters);
-
         const subject = filters.subject as string;
         const week_day = filters.week_day as string;
         const time = filters.time as string;
@@ -45,7 +43,7 @@ export default class ClassesController {
     }
 
     async create(request: Request, response: Response) {
-        console.log('request: ', request.body);
+
         const {
             name,
             avatar,
@@ -57,8 +55,6 @@ export default class ClassesController {
 
         } = request.body;
 
-        //Constrói varias queries para executar no final. 
-        //Usado para testar as queries e garantir que todas serão executadas
         const trx = await db.transaction();
 
         try {
@@ -67,7 +63,7 @@ export default class ClassesController {
                 avatar,
                 whatsapp,
                 bio,
-            });
+            })
 
             const user_id = insertedUsersIds[0];
 
@@ -75,7 +71,7 @@ export default class ClassesController {
                 subject,
                 cost,
                 user_id,
-            });
+            })
 
             const class_id = insertedClassesIds;
 
@@ -88,14 +84,11 @@ export default class ClassesController {
                 };
             });
 
-            await trx('class_schedule').insert(classSchedule);
-
-            //Executa as queries anteriores
+            await trx('class_schedule').insert(classSchedule)
             await trx.commit();
 
-            return response.status(201).send();
+            return response.status(201).send(request.body);
         } catch (err) {
-            //Desfazer as alterações no banco caso dê erro
             await trx.rollback();
             return response.status(400).json({
                 error: 'Unexpected error while creating new class'

@@ -13,8 +13,6 @@
   color: var(--color-text-in-primary);
 }
 
-
-
 #page-teacher-list main{
   margin:3.2rem auto;
   width: 90%;
@@ -34,6 +32,7 @@
   text-decoration: none;
   transition: background-color 0.2s;
   margin-top: 3.2rem;
+  color: var(--color-button-text);
 }
 
 #search-teachers button:hover{
@@ -81,6 +80,7 @@
       text-decoration: none;
       transition: background-color 0.2s;
       margin-top: 3.2rem;
+      color: var(--color-button-text);
   }
   
   #search-teachers button:hover{
