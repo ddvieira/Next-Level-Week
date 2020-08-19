@@ -112,12 +112,23 @@
 
   #page-teacher-form main .schedule-item{
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2fr 1fr 1fr 0.5fr;
       column-gap:1.6rem;
   }
   #page-teacher-form main .schedule-item .input-block{
       margin-top: 0 !important;
   }
+
+  #page-teacher-form main .schedule-item .delete-button{
+      display: flex;  
+      align-items: center;
+      justify-content: space-between;
+  }
+
+  /* #page-teacher-form main .schedule-item .delete-button svg
+  {
+    fontSize: 30
+  } */
 
   #page-teacher-form main footer{
       padding: 4.0rem 6.4rem;
@@ -126,13 +137,11 @@
       justify-content: space-between;
   }
 
-  #page-teacher-form main footer p{
-     
+  #page-teacher-form main footer p {     
       justify-content: space-between;
   }
 
-  #page-teacher-form main footer button {
-     
+  #page-teacher-form main footer button {     
       width: 20rem;
       margin-top: 0;
   }

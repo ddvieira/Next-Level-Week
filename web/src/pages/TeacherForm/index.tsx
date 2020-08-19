@@ -4,15 +4,18 @@ import PageHeader from '../../component/PageHeader';
 import Input from '../../component/Input';
 import Textarea from '../../component/Textarea';
 import Select from '../../component/Select';
+import Alert from '../../component/Alert';
 import api from '../../services/api';
 
 import WarningIcon from '../../assets/images/icons/warning.svg'
+import DeleteButton from '@material-ui/icons/DeleteForeverTwoTone';
+
 
 import './styles.css';
 
 function TeacherForm() {
   const [scheduleItems, setScheduleItems] = useState([
-    { week_day: 0, from: '', to: '' },
+    { week_day: '0', from: '', to: '' },
   ]);
 
   const [name, setName] = useState('');
@@ -27,11 +30,17 @@ function TeacherForm() {
   function addNewScheduleItem() {
     setScheduleItems([
       ...scheduleItems,
-      { week_day: 0, from: '', to: '' },
+      { week_day: '1', from: '', to: '' },
     ]);
   }
 
-  function setScheduleItemValue(position: number, field: string, value: string) {
+  function removeNewScheduleItem(week_day: string) {
+    setScheduleItems(scheduleItems.filter(scheduleItem => {
+      return scheduleItem.week_day !== week_day
+    }));
+  }
+
+  function setScheduleItemValue(position: number, field: string, value: any) {
     const updateSchedule = scheduleItems.map((scheduleItem, index) => {
       if (index === position) {
         return { ...scheduleItem, [field]: value }
@@ -55,10 +64,21 @@ function TeacherForm() {
     }
 
     api.post('classes', teacherForm).then(() => {
-      alert('cadastro realizado com sucesso');
+      Alert({
+        icon: 'success',
+        title: 'Cadastro realizado com sucesso!',
+        showConfirmButton: false,
+        timer: 2000
+      });
       history.push('/');
     }).catch(() => {
-      alert('Erro no cadastro')
+      Alert({
+        icon: "error",
+        title: 'Erro no Cadastro',
+        text: 'Por favor, tente novamente.',
+        showConfirmButton: false,
+        timer: 2000
+      });
     });
   }
 
@@ -103,6 +123,7 @@ function TeacherForm() {
             <Select
               name="subject"
               label="Matéria"
+              value={subject}
               options={[
                 { value: 'Artes', label: 'Artes' },
                 { value: 'Biologia', label: 'Biologia' },
@@ -128,19 +149,16 @@ function TeacherForm() {
           </fieldset>
 
           <fieldset>
-            <legend>
-              Horários disponíveis
-              <button onClick={addNewScheduleItem}>
-                + Novo horário
-              </button>
+            <legend>Horários disponíveis
+              <button type="button" onClick={addNewScheduleItem}> + Novo horário</button>
             </legend>
-
             {scheduleItems.map((scheduleItem, index) => {
               return (
                 <div key={scheduleItem.week_day} className="schedule-item">
                   <Select
                     name="week_day"
                     label="Dia da semana"
+                    value={scheduleItem.week_day}
                     onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
                     options={[
                       { value: '0', label: 'Domingo' },
@@ -150,10 +168,31 @@ function TeacherForm() {
                       { value: '4', label: 'Quinta-feira' },
                       { value: '5', label: 'Sexta-feira' },
                       { value: '6', label: 'Sábado' },
-                    ]} />
+                    ]}
+                  />
 
-                  <Input name="from" value={scheduleItem.from} label="Das" type="time" onChange={e => setScheduleItemValue(index, 'from', e.target.value)} />
-                  <Input name="to" value={scheduleItem.to} label="ate" type="time" onChange={e => setScheduleItemValue(index, 'to', e.target.value)} />
+                  <Input
+                    name="from"
+                    value={scheduleItem.from}
+                    label="Das"
+                    type="time"
+                    onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
+                  />
+                  <Input
+                    name="to"
+                    value={scheduleItem.to}
+                    label="ate"
+                    type="time"
+                    onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
+                  >
+                  </Input>
+                  <div className="delete-button">
+                    <DeleteButton
+                      color="disabled"
+                      style={{ fontSize: 35 }}
+                      onClick={() => removeNewScheduleItem(scheduleItem.week_day)} />
+                  </div>
+
                 </div>
               );
             })}
